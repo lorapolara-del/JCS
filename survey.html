@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Masculine / Feminine Principles Questionnaire</title>
+<style>
+:root{--bg:#f4f2ef;--card:#fff;--tx:#1e2430;--mu:#6b7280;--bd:#dde1e6;--hd:#1b7ea0;--r:#e8380d;--g:#1fa855;--row:#e9eef2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181d;--card:#1f242b;--tx:#eceef1;--mu:#9aa3af;--bd:#343b45;--hd:#1b7ea0;--r:#ff6a45;--g:#3fcf7a;--row:#262c34}}
+:root[data-theme="dark"]{--bg:#15181d;--card:#1f242b;--tx:#eceef1;--mu:#9aa3af;--bd:#343b45;--hd:#1b7ea0;--r:#ff6a45;--g:#3fcf7a;--row:#262c34}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.art{position:fixed;top:0;right:0;bottom:0;width:150px;background:url(/art.jpg) center/cover;z-index:1}
+.w{max-width:760px;margin:0 20px;padding:16px 0 40px;position:relative}
+@media (min-width:1000px){.w{margin:0 auto;transform:translateX(-75px)}}
+@media (max-width:700px){.art{width:14px}.w{margin:0 28px 0 14px}}
+.logo{display:block;background:#fff;padding:8px 14px;border-radius:6px;width:210px;margin-bottom:16px}
+.logo img{width:100%;display:block}
+h1{font-size:24px;margin:0 0 4px}.s{color:var(--mu);margin:0 0 14px}
+.red{color:var(--r)}.grn{color:var(--g)}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.big div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center}
+.big strong{display:block;font-size:46px;line-height:1.1}.big span{color:var(--mu);font-size:14px}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}
+.box h2{font-size:15px;margin:0 0 8px;color:var(--mu);font-weight:600}
+.btn{padding:12px 18px;border:0;border-radius:10px;background:var(--hd);color:#fff;font-size:16px;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}.btn.o{background:none;border:1px solid var(--bd);color:var(--tx)}
+.note{color:var(--mu);font-size:13px}.hide{display:none}
+svg{width:100%;height:auto;display:block}
+
+.hdr{background:var(--hd);color:#fff;display:grid;grid-template-columns:44px 1fr;padding:10px 12px;border-radius:8px 8px 0 0;font-weight:700;font-size:14px}
+.q{display:grid;grid-template-columns:44px 1fr;gap:4px 0;padding:10px 12px;background:var(--row)}
+.q:nth-child(even){background:var(--card)}
+.q b{font-size:18px;text-align:center}
+.sc{grid-column:2;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
+.sc button{padding:9px 0;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px;cursor:pointer}
+.sc button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5;font-size:14px;color:var(--mu)}
+.bar i{display:block;height:4px;background:var(--bd);border-radius:2px;margin-top:5px}.bar u{display:block;height:4px;background:var(--hd);border-radius:2px;width:0;text-decoration:none}
+.cp{display:flex;gap:8px;margin-top:10px}.cp input{flex:1;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+</style></head><body>
+<div class="art"></div>
+<div class="w">
+<a class="logo"><img alt="Jungian Coaching School International" src="/logo.jpg"></a>
+<div id="form">
+<h1>Masculine / Feminine Principles</h1>
+<p class="s">Rate each statement: <b>Disagree Strongly = 1</b> … <b>Agree Strongly = 5</b>.</p>
+<div class="bar"><span id="prog">Answered: 0 / 46</span><i><u id="pb"></u></i></div>
+<div class="hdr"><span>#</span><span>Question</span></div>
+<div id="qs"></div>
+<p><button class="btn" id="go" disabled>Show my results</button></p>
+</div>
+<div id="done" class="hide">
+<h1>Your results</h1>
+<p class="s">Average score per category (scale 1–5).</p>
+<div class="big"><div><strong class="red" id="rm">–</strong><span><b class="red">Red</b> TOTAL (Masculine Principles)</span></div>
+<div><strong class="grn" id="rf">–</strong><span><b class="grn">Green</b> TOTAL (Feminine Principles)</span></div></div>
+<div class="box"><p id="st" class="note" style="margin:0"></p><p style="margin:8px 0 0"><button class="btn o hide" id="retry">Try again</button></p></div>
+<button class="btn o" id="back">← Edit answers</button>
+</div>
+</div>
+<script>
+const T=["I am good at arguments.","I am ethical.","I love experiencing.","I respect hierarchy.","I love spending time in nature.","I can become totally irrational.","I love touching.","I am good at focusing.","I can easily see images.","I am very individualistic.","I need a safe and relaxed surrounding.","I love to repeat things.","I have transformed my life several times.","I am a person with high values.","I am very courageous.","Time is an important factor in my life.","I am conscious about my life.","I am a compassionate person.","I love to process and create things slowly.","I am a structured person, and I am punctual.","I love order.","I need meaning to act.","I live by my instincts.","Boundaries and limits are important to me.","A serious employee is a persistent person.","I deeply respect the law.","I listen inwardly to myself.","I love to change things in life.","I am a nurturing person.","I believe a person needs ideology.","I am a protective person and I protect the ones I love.","I like to bridge and mediate between people.","I am fond of organizing.","I believe in magic.","I can contain a lot of stress.","I am a highly creative person.","I need priorities to feel well.","I am patient and tolerant.","I love physical activities.","I am fast.","I lean mostly on my intuition.","I am active and prefer to act rather than wait.","I am empathetic toward others.","I feel before I think.","I am self-disciplined.","I love to be in my imagination."];
+const C="rrgrgggrgrgggrrrrggrrrgrrrgggrgrrgggrgrrgrggrg"; // r = red (masculine), g = green (feminine)
+const $=id=>document.getElementById(id),ans=new Array(46).fill(0);
+T.forEach((t,i)=>{const d=document.createElement("div");d.className="q";
+ const n=document.createElement("b");n.className=C[i]==="r"?"red":"grn";n.textContent=i+1;
+ const x=document.createElement("span");x.textContent=t;
+ const s=document.createElement("div");s.className="sc";
+ for(let v=1;v<=5;v++){const b=document.createElement("button");b.textContent=v;
+  b.onclick=()=>{ans[i]=v;[...s.children].forEach((e,k)=>e.classList.toggle("on",k+1===v));upd();};s.appendChild(b);}
+ d.append(n,x,s);$("qs").appendChild(d);});
+function upd(){const k=ans.filter(Boolean).length;$("prog").textContent="Answered: "+k+" / 46";$("pb").style.width=k/46*100+"%";$("go").disabled=k<46;}
+const avg=c=>{let s=0,n=0;ans.forEach((v,i)=>{if(C[i]===c){s+=v;n++;}});return s/n;};
+const f=x=>(Math.round(x*10)/10).toFixed(1);
+const room=new URLSearchParams(location.search).get("room")||"main";
+let cid;try{cid=localStorage.getItem("mfid");if(!cid){cid=crypto.randomUUID();localStorage.setItem("mfid",cid);}}catch(e){cid="u"+Math.random().toString(36).slice(2)+Date.now().toString(36);}
+let cur=null;
+async function send(){const st=$("st");$("retry").classList.add("hide");st.textContent="Sending your result to the group…";
+ try{const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({room:room,id:cid,a:cur[0],b:cur[1]})});
+  if(!r.ok)throw 0;st.textContent="✓ Your result has been added to the group chart.";}
+ catch(e){st.textContent="Could not send your result to the group. Your own results above are still valid.";$("retry").classList.remove("hide");}}
+$("retry").onclick=send;
+$("go").onclick=()=>{const m=avg("r"),g=avg("g");cur=[Math.round(m*100)/100,Math.round(g*100)/100];
+ $("rm").textContent=f(m);$("rf").textContent=f(g);
+ $("form").classList.add("hide");$("done").classList.remove("hide");window.scrollTo(0,0);send();};
+$("back").onclick=()=>{$("done").classList.add("hide");$("form").classList.remove("hide");};
+</script></body></html>
